@@ -6,6 +6,7 @@ import models.enums.*;
 import repository.InMemoryRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -87,27 +88,62 @@ public class GenerateTicketService
         //to search for the empty slot
 
         //======================CRITICAL SECTION STARTS HERE=============================
-        ParkingSpot availableParkingSpot;
+        ParkingSpot availableParkingSpot = null;
+
+
         synchronized (this)
         {
+            // STEP 1: Check parking lot capacity for this vehicle type
 
+            AllowedVehicle lotAllowedVehicle  = findAvailableCapacity(parkingLot.getAllowed_vehicles(),vehicle.getVehicleType());
 
-            List<ParkingSpot> allAvailableParkingSlot = parkingSpotInMemoryRepository.findAll();
-            //In real life we will write a method to get findAllByParkingLotAndVehicleType() but currently as data
-            // is small we can call findAll() as well , but in real life findAll() can get a lot of data making search slow
+            if(lotAllowedVehicle==null || lotAllowedVehicle.getAvailableCapacity()<=0)
+                throw new RuntimeException("Parking Lot does not have capacity to accommodate a "+vehicle.getVehicleType());
 
-            availableParkingSpot = ParkingSpotAllocationStrategyFactory
-                    .getSpotAllocationStrategy(parkingLot.getSpotAllocationStrategyType())
-                    .allocateParkingSpot(allAvailableParkingSlot, vehicle.getVehicleType());
-
-            if (availableParkingSpot == null) {
-                throw new RuntimeException("Slot not available");
+            // STEP 2: Check floors one by one
+            if (parkingLot.getParkingFloors() == null) {
+                throw new RuntimeException("Parking floors are not configured.");
             }
 
-            //Once Parking Spot is found then update status of that spot as FILLED and save in spot repo.
-            //Also from the ParkingLot and ParkingFloor we can reduce number of available spot for that vehicle
-            availableParkingSpot.setParkingSpotStatus(ParkingSpotStatus.FILLED);
-            availableParkingSpot = parkingSpotInMemoryRepository.save(availableParkingSpot);
+            for(ParkingFloor parkingFloor : parkingLot.getParkingFloors())
+            {
+                AllowedVehicle floorAllowedVehicle = findAvailableCapacity(parkingFloor.getAllowedVehicles(),vehicle.getVehicleType());
+
+                if(floorAllowedVehicle==null || floorAllowedVehicle.getAvailableCapacity()<=0)
+                    continue;//move to next floor as current floor has no capacity for given vehicle
+
+                // STEP 3: Search spots only on this eligible floor
+                availableParkingSpot = ParkingSpotAllocationStrategyFactory
+                        .getSpotAllocationStrategy(parkingLot.getSpotAllocationStrategyType())
+                        .allocateParkingSpot(parkingFloor.getParkingSpots(), vehicle.getVehicleType());
+
+                // Continue to the next floor if no compatible empty
+                // spot was found on the current floor.
+                if (availableParkingSpot == null) {
+                    continue;
+                }
+
+                // STEP 4: Reserve the spot
+                availableParkingSpot.setParkingSpotStatus(
+                        ParkingSpotStatus.FILLED
+                );
+
+                parkingSpotInMemoryRepository.save(availableParkingSpot);
+
+                // STEP 5: Update both capacity counters
+                floorAllowedVehicle.setAvailableCapacity(floorAllowedVehicle.getAvailableCapacity()-1);
+
+                lotAllowedVehicle.setAvailableCapacity(lotAllowedVehicle.getAvailableCapacity()-1);
+
+                // A suitable spot has been allocated.
+                break;
+
+            }
+
+            // STEP 6: No suitable spot was found on any eligible floor
+            if (availableParkingSpot == null) {
+                throw new RuntimeException("No suitable parking spot available for "+ vehicle.getVehicleType());
+            }
 
         }
         //================CRITICAL SECTION ENDS====================================
@@ -119,6 +155,22 @@ public class GenerateTicketService
         ticket.setEntry_time(LocalDateTime.now());
         //add the ticket object in repo
         return ticketInMemoryRepository.save(ticket);
+    }
+
+    //Method to check if the allowed vehicle list of lot or floor has the capacity for the current vehicle type to accommodate4
+    //In case not available
+
+    private AllowedVehicle findAvailableCapacity(List<AllowedVehicle> allowedVehicles,VehicleType vehicleType)
+    {
+        if(allowedVehicles == null)
+            return null;
+
+        for(AllowedVehicle allowedVehicle:allowedVehicles)
+        {
+            if(allowedVehicle.getVehicleType()==vehicleType && allowedVehicle.getAvailableCapacity()>0)
+                return allowedVehicle;
+        }
+        return null;
     }
 }
 
