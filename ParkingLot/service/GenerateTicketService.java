@@ -27,7 +27,7 @@ public class GenerateTicketService
         this.ticketInMemoryRepository = ticketInMemoryRepository;
     }
 
-    public synchronized  Ticket generateTicket(Long operatorId, String registrationNumber, String ownerName, String ownerContactNumber,
+    public Ticket generateTicket(Long operatorId, String registrationNumber, String ownerName, String ownerContactNumber,
                                  VehicleType vehicleType)
     {
         //TODO: Creating ticket  logic go's here
@@ -86,23 +86,31 @@ public class GenerateTicketService
         //We can fetch the spot allocation strategy from the Parking lot object and we will also get list of Parking floors
         //to search for the empty slot
 
-        List<ParkingSpot> allAvailableParkingSlot = parkingSpotInMemoryRepository.findAll();
-        //In real life we will write a method to get findAllByParkingLotAndVehicleType() but currently as data
-        // is small we can call findAll() as well , but in real life findAll() can get a lot of data making search slow
+        //======================CRITICAL SECTION STARTS HERE=============================
+        ParkingSpot availableParkingSpot;
+        synchronized (this)
+        {
 
-        ParkingSpot availableParkingSpot = ParkingSpotAllocationStrategyFactory
-                .getSpotAllocationStrategy(parkingLot.getSpotAllocationStrategyType())
-                .allocateParkingSpot(allAvailableParkingSlot,vehicle.getVehicleType());
 
-        if(availableParkingSpot == null){
-            throw new RuntimeException("Slot not available");
+            List<ParkingSpot> allAvailableParkingSlot = parkingSpotInMemoryRepository.findAll();
+            //In real life we will write a method to get findAllByParkingLotAndVehicleType() but currently as data
+            // is small we can call findAll() as well , but in real life findAll() can get a lot of data making search slow
+
+            availableParkingSpot = ParkingSpotAllocationStrategyFactory
+                    .getSpotAllocationStrategy(parkingLot.getSpotAllocationStrategyType())
+                    .allocateParkingSpot(allAvailableParkingSlot, vehicle.getVehicleType());
+
+            if (availableParkingSpot == null) {
+                throw new RuntimeException("Slot not available");
+            }
+
+            //Once Parking Spot is found then update status of that spot as FILLED and save in spot repo.
+            //Also from the ParkingLot and ParkingFloor we can reduce number of available spot for that vehicle
+            availableParkingSpot.setParkingSpotStatus(ParkingSpotStatus.FILLED);
+            availableParkingSpot = parkingSpotInMemoryRepository.save(availableParkingSpot);
+
         }
-
-        //Once Parking Spot is found then update status of that spot as FILLED and save in spot repo.
-        //Also from the ParkingLot and ParkingFloor we can reduce number of available spot for that vehicle
-        availableParkingSpot.setParkingSpotStatus(ParkingSpotStatus.FILLED);
-        availableParkingSpot = parkingSpotInMemoryRepository.save(availableParkingSpot);
-
+        //================CRITICAL SECTION ENDS====================================
         //create ticket object
         ticket.setOperator(operator);
         ticket.setParkingSpot(availableParkingSpot);
