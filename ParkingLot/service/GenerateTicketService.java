@@ -27,7 +27,7 @@ public class GenerateTicketService
         this.ticketInMemoryRepository = ticketInMemoryRepository;
     }
 
-    public Ticket generateTicket(Long operatorId, String registrationNumber, String ownerName, String ownerContactNumber,
+    public synchronized  Ticket generateTicket(Long operatorId, String registrationNumber, String ownerName, String ownerContactNumber,
                                  VehicleType vehicleType)
     {
         //TODO: Creating ticket  logic go's here
