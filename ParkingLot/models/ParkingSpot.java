@@ -1,13 +1,19 @@
 package models;
 
-import models.enums.AllowedVehicleType;
+import models.enums.VehicleType;
 import models.enums.ParkingSpotStatus;
 
 public class ParkingSpot extends BaseModal
 {
     private ParkingSpotStatus parkingSpotStatus;
     private String parkingSpotNumber;
-    private AllowedVehicleType allowedVehicleType;
+    private VehicleType vehicleTypes;
+
+    public ParkingSpot(String parkingSpotNumber, VehicleType vehicleTypes) {
+        this.parkingSpotStatus = ParkingSpotStatus.EMPTY;
+        this.parkingSpotNumber = parkingSpotNumber;
+        this.vehicleTypes = vehicleTypes;
+    }
 
     public ParkingSpotStatus getParkingSpotStatus() {
         return parkingSpotStatus;
@@ -25,11 +31,11 @@ public class ParkingSpot extends BaseModal
         this.parkingSpotNumber = parkingSpotNumber;
     }
 
-    public AllowedVehicleType getAllowedVehicleType() {
-        return allowedVehicleType;
+    public VehicleType getAllowedVehicleType() {
+        return vehicleTypes;
     }
 
-    public void setAllowedVehicleType(AllowedVehicleType allowedVehicleType) {
-        this.allowedVehicleType = allowedVehicleType;
+    public void setAllowedVehicleType(VehicleType vehicleTypes) {
+        this.vehicleTypes = vehicleTypes;
     }
 }

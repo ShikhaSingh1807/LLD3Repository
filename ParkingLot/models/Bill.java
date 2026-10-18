@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Bill extends BaseModal
 {
-    private String billNumber;
+    private Integer billNumber;
     private BillStatus billStatus;
     private List<Payment> paymentList;
     private Operator operator;
@@ -15,12 +15,18 @@ public class Bill extends BaseModal
     private Gate gate;
     private Double amount;
     private LocalDateTime exit_time;
+    private static Integer count = 0;
 
-    public String getBillNumber() {
+    public Bill()
+    {
+        setBillNumber(++count); // Human readable number not UUID
+    }
+
+    public Integer getBillNumber() {
         return billNumber;
     }
 
-    public void setBillNumber(String billNumber) {
+    public void setBillNumber(Integer billNumber) {
         this.billNumber = billNumber;
     }
 

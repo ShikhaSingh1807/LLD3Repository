@@ -6,10 +6,16 @@ import models.enums.GateType;
 public class Gate extends  BaseModal
 {
     private GateStatus gateStatus;
-    private String gateNumber;
+    private Integer gateNumber;
     private GateType gateType;
     private Operator operator;
     private ParkingLot parkingLot;//from operator id get the gate id and from gate id get parking lot id
+
+    public Gate(GateStatus gateStatus, Integer gateNumber, GateType gateType) {
+        this.gateStatus = gateStatus;
+        this.gateNumber = gateNumber;
+        this.gateType = gateType;
+    }
 
     public ParkingLot getParkingLot() {
         return parkingLot;
@@ -27,11 +33,11 @@ public class Gate extends  BaseModal
         this.gateStatus = gateStatus;
     }
 
-    public String getGateNumber() {
+    public Integer getGateNumber() {
         return gateNumber;
     }
 
-    public void setGateNumber(String gateNumber) {
+    public void setGateNumber(Integer gateNumber) {
         this.gateNumber = gateNumber;
     }
 

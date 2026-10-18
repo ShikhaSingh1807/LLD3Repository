@@ -1,7 +1,5 @@
 package models;
 
-import models.enums.TicketStatus;
-
 import java.time.LocalDateTime;
 
 public class Ticket extends BaseModal
@@ -11,8 +9,14 @@ public class Ticket extends BaseModal
     private Gate gate;
     private Operator operator;
     private Vehicle vehicle;
-    private TicketStatus ticketStatus;
-    private ParkingSpot parkingSpot;
+    private ParkingSpot parkingSpot; // From Parking Spot we can get parking floor details
+    private static Integer count=0;
+
+    public Ticket()
+    {
+        setTicketNumber(String.valueOf(++count)); // Human readable number  -
+        //In the Production we use Unique Number Generator
+    }
 
     public String getTicketNumber() {
         return ticketNumber;
@@ -52,14 +56,6 @@ public class Ticket extends BaseModal
 
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
-    }
-
-    public TicketStatus getTicketStatus() {
-        return ticketStatus;
-    }
-
-    public void setTicketStatus(TicketStatus ticketStatus) {
-        this.ticketStatus = ticketStatus;
     }
 
     public ParkingSpot getParkingSpot() {

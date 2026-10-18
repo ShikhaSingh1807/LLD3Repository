@@ -1,6 +1,6 @@
 package models;
 
-import models.enums.AllowedVehicleType;
+import models.enums.VehicleType;
 import models.enums.ParkingFloorStatus;
 
 import java.util.List;
@@ -9,8 +9,13 @@ public class ParkingFloor extends BaseModal
 {
     private ParkingFloorStatus parkingFloorStatus;
     private List<ParkingSpot> parkingSpots;
-    private List<AllowedVehicleType> allowedVehicleTypes;
-    private String floorNumber;
+    private List<AllowedVehicle> allowedVehicles;
+    private Integer floorNumber;
+
+    public ParkingFloor(Integer floorNumber) {
+        this.parkingFloorStatus = ParkingFloorStatus.EMPTY;
+        this.floorNumber = floorNumber;
+    }
 
     public ParkingFloorStatus getParkingFloorStatus() {
         return parkingFloorStatus;
@@ -28,19 +33,19 @@ public class ParkingFloor extends BaseModal
         this.parkingSpots = parkingSpots;
     }
 
-    public List<AllowedVehicleType> getAllowedVehicleTypes() {
-        return allowedVehicleTypes;
+    public List<AllowedVehicle> getAllowedVehicles() {
+        return allowedVehicles;
     }
 
-    public void setAllowedVehicleTypes(List<AllowedVehicleType> allowedVehicleTypes) {
-        this.allowedVehicleTypes = allowedVehicleTypes;
+    public void setAllowedVehicles(List<AllowedVehicle> allowedVehicles) {
+        this.allowedVehicles = allowedVehicles;
     }
 
-    public String getFloorNumber() {
+    public Integer getFloorNumber() {
         return floorNumber;
     }
 
-    public void setFloorNumber(String floorNumber) {
+    public void setFloorNumber(Integer floorNumber) {
         this.floorNumber = floorNumber;
     }
 }

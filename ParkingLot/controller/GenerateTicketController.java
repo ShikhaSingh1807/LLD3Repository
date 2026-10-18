@@ -36,7 +36,7 @@ public class GenerateTicketController
         catch(Exception e)
         {
             System.out.println("Error in generating ticket : "+e.getMessage());
-            e.printStackTrace();
+            //e.printStackTrace();
             generateTicketResponseDTO.setResrponseStatus(ResponseStatus.FAILURE);
             generateTicketResponseDTO.setMessage(e.getMessage());
         }

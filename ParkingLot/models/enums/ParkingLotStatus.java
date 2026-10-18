@@ -2,5 +2,5 @@ package models.enums;
 
 public enum ParkingLotStatus
 {
-    OPERATIONAL,NON_OPERATIONAL,FILLED,EMPTY
+    OPEN,NON_OPERATIONAL,FILLED,EMPTY,CLOSED
 }

@@ -1,6 +1,6 @@
 package models.enums;
 
-public enum AllowedVehicleType
+public enum VehicleType
 {
    BIKE,CAR,TRUCK
 }

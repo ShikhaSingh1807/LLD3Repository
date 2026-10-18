@@ -3,12 +3,32 @@ package models;
 import models.enums.PaymentMode;
 import models.enums.PaymentStatus;
 
+import java.time.LocalDateTime;
+
 public class Payment extends BaseModal
 {
     private PaymentMode paymentMode;
     private PaymentStatus paymentStatus;
     private Double amount;
     private String txn_id;
+    private LocalDateTime paymentTime;
+    private Bill bill;
+
+    public Bill getBill() {
+        return bill;
+    }
+
+    public void setBill(Bill bill) {
+        this.bill = bill;
+    }
+
+    public LocalDateTime getPaymentTime() {
+        return paymentTime;
+    }
+
+    public void setPaymentTime(LocalDateTime paymentTime) {
+        this.paymentTime = paymentTime;
+    }
 
     public PaymentMode getPaymentMode() {
         return paymentMode;
