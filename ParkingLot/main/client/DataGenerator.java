@@ -35,7 +35,7 @@ public class DataGenerator
         //Things to populate or create before running program
 
         //1 Parking Lot
-        ParkingLot parkingLot = new ParkingLot("Pheonix", PricingStrategyTypes.HOURLY, SpotAllocationStrategyType.RANDOM);
+        ParkingLot parkingLot = new ParkingLot("Pheonix", PricingStrategyTypes.HOURLY, SpotAllocationStrategyType.FIRST_AVAILABLE);
 
         //2 Parking Floors
         ParkingFloor parkingFloor1 = new ParkingFloor(1);
@@ -43,18 +43,18 @@ public class DataGenerator
 
 
         //4 Parking Slots :- 2 each for BIKE and CAR
-        ParkingSpot parkingSpot1A =  new ParkingSpot("1A", VehicleType.BIKE);
-        ParkingSpot parkingSpot1B = new ParkingSpot("1B",VehicleType.BIKE);
-        ParkingSpot parkingSpot1C = new ParkingSpot("1C",VehicleType.CAR);
-        ParkingSpot parkingSpot1D = new ParkingSpot("1D",VehicleType.CAR);
-        ParkingSpot parkingSpot1E = new ParkingSpot("1E",VehicleType.CAR);
+        ParkingSpot parkingSpot1A =  new ParkingSpot(1, VehicleType.BIKE);
+        ParkingSpot parkingSpot1B = new ParkingSpot(2,VehicleType.BIKE);
+        ParkingSpot parkingSpot1C = new ParkingSpot(3,VehicleType.CAR);
+        ParkingSpot parkingSpot1D = new ParkingSpot(4,VehicleType.CAR);
+        ParkingSpot parkingSpot1E = new ParkingSpot(5,VehicleType.CAR);
 
-        ParkingSpot parkingSpot2A =  new ParkingSpot("2A", VehicleType.BIKE);
-        ParkingSpot parkingSpot2B = new ParkingSpot("2B",VehicleType.BIKE);
-        ParkingSpot parkingSpot2C = new ParkingSpot("2C",VehicleType.TRUCK);
-        ParkingSpot parkingSpot2D = new ParkingSpot("2D",VehicleType.BIKE);
-        ParkingSpot parkingSpot2E = new ParkingSpot("2E",VehicleType.CAR);
-        ParkingSpot parkingSpot2F = new ParkingSpot("2F",VehicleType.CAR);
+        ParkingSpot parkingSpot2A =  new ParkingSpot(6, VehicleType.BIKE);
+        ParkingSpot parkingSpot2B = new ParkingSpot(7,VehicleType.BIKE);
+        ParkingSpot parkingSpot2C = new ParkingSpot(8,VehicleType.TRUCK);
+        ParkingSpot parkingSpot2D = new ParkingSpot(9,VehicleType.BIKE);
+        ParkingSpot parkingSpot2E = new ParkingSpot(10,VehicleType.CAR);
+        ParkingSpot parkingSpot2F = new ParkingSpot(11,VehicleType.CAR);
 
         parkingSpotInMemoryRepository.save(parkingSpot1A);
         parkingSpotInMemoryRepository.save(parkingSpot1B);

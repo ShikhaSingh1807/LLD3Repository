@@ -4,15 +4,15 @@ import dtos.GenerateTicketRequestDTO;
 import dtos.GenerateTicketResponseDTO;
 import dtos.ResponseStatus;
 import models.Ticket;
-import service.GenerateTicketService;
+import service.TicketService;
 
-public class GenerateTicketController
+public class TicketController
 {
-    private GenerateTicketService generateTicketService;
+    private TicketService ticketService;
 
-    public GenerateTicketController(GenerateTicketService generateTicketService)
+    public TicketController(TicketService ticketService)
     {
-        this.generateTicketService = generateTicketService;
+        this.ticketService = ticketService;
     }
 
     public GenerateTicketResponseDTO generateTicket(GenerateTicketRequestDTO requestDTO)
@@ -22,7 +22,7 @@ public class GenerateTicketController
         try
         {
             //Input Validation on the request DTO
-            Ticket ticket = generateTicketService.generateTicket(requestDTO.getOperatorId(),
+            Ticket ticket = ticketService.generateTicket(requestDTO.getOperatorId(),
                     requestDTO.getRegistrationNumber(),requestDTO.getOwnerName(),
                     requestDTO.getOwnerContactNumber(),requestDTO.getVehicleType());
 

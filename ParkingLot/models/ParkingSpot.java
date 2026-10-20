@@ -6,10 +6,10 @@ import models.enums.ParkingSpotStatus;
 public class ParkingSpot extends BaseModal
 {
     private ParkingSpotStatus parkingSpotStatus;
-    private String parkingSpotNumber;
+    private Integer parkingSpotNumber;
     private VehicleType vehicleTypes;
 
-    public ParkingSpot(String parkingSpotNumber, VehicleType vehicleTypes) {
+    public ParkingSpot(Integer parkingSpotNumber, VehicleType vehicleTypes) {
         this.parkingSpotStatus = ParkingSpotStatus.EMPTY;
         this.parkingSpotNumber = parkingSpotNumber;
         this.vehicleTypes = vehicleTypes;
@@ -23,11 +23,11 @@ public class ParkingSpot extends BaseModal
         this.parkingSpotStatus = parkingSpotStatus;
     }
 
-    public String getParkingSpotNumber() {
+    public Integer getParkingSpotNumber() {
         return parkingSpotNumber;
     }
 
-    public void setParkingSpotNumber(String parkingSpotNumber) {
+    public void setParkingSpotNumber(Integer parkingSpotNumber) {
         this.parkingSpotNumber = parkingSpotNumber;
     }
 

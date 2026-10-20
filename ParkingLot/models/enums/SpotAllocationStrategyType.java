@@ -2,5 +2,5 @@ package models.enums;
 
 public enum SpotAllocationStrategyType
 {
-    RANDOM,MANUAL
+    FIRST_AVAILABLE,LESS_SPOT_FLOOR
 }

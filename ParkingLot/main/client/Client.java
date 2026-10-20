@@ -1,12 +1,12 @@
 package main.client;
 
-import controller.GenerateTicketController;
+import controller.TicketController;
 import dtos.GenerateTicketRequestDTO;
 import dtos.GenerateTicketResponseDTO;
 import models.*;
 import models.enums.VehicleType;
 import repository.InMemoryRepository;
-import service.GenerateTicketService;
+import service.TicketService;
 import service.VehicleService;
 
 public class Client
@@ -29,15 +29,15 @@ public class Client
         dataGenerator.generateData();
 
         VehicleService vehicleService = new VehicleService(vehicleInMemoryRepository);
-        GenerateTicketService generateTicketService = new GenerateTicketService(operatorInMemoryRepository,
+        TicketService ticketService = new TicketService(operatorInMemoryRepository,
                 vehicleService,parkingSpotInMemoryRepository,ticketInMemoryRepository);
 
-        GenerateTicketController generateTicketController = new GenerateTicketController(generateTicketService);
+        TicketController ticketController = new TicketController(ticketService);
 
         GenerateTicketRequestDTO requestDTO =
                 new GenerateTicketRequestDTO(12L,"MH-46-34523","Shikha",
                         "9867543423", VehicleType.BIKE);
-        GenerateTicketResponseDTO responseDTO = generateTicketController.generateTicket(requestDTO);
+        GenerateTicketResponseDTO responseDTO = ticketController.generateTicket(requestDTO);
         System.out.println(responseDTO.getMessage()+" | Ticket Id : "+responseDTO.getTicketNumber()
                 +" | Parking Spot : "+responseDTO.getParkingSpot().getParkingSpotNumber());
 
@@ -45,35 +45,35 @@ public class Client
 
         requestDTO = new GenerateTicketRequestDTO(12L,"MH-46-04523","Shikhar",
                         "9867543423", VehicleType.BIKE);
-        responseDTO = generateTicketController.generateTicket(requestDTO);
+        responseDTO = ticketController.generateTicket(requestDTO);
         System.out.println(responseDTO.getMessage()+" | Ticket Id : "+responseDTO.getTicketNumber()
                 +" | Parking Spot : "+responseDTO.getParkingSpot().getParkingSpotNumber());
 
 
         requestDTO = new GenerateTicketRequestDTO(12L,"MH-46-04573","Simran",
                 "9867543423", VehicleType.BIKE);
-        responseDTO = generateTicketController.generateTicket(requestDTO);
+        responseDTO = ticketController.generateTicket(requestDTO);
         System.out.println(responseDTO.getMessage()+" | Ticket Id : "+responseDTO.getTicketNumber()
                 +" | Parking Spot : "+responseDTO.getParkingSpot().getParkingSpotNumber());
 
 
         requestDTO = new GenerateTicketRequestDTO(12L,"MH-46-04573","Sudhanshu",
                 "9867543423", VehicleType.BIKE);
-        responseDTO = generateTicketController.generateTicket(requestDTO);
+        responseDTO = ticketController.generateTicket(requestDTO);
         System.out.println(responseDTO.getMessage()+" | Ticket Id : "+responseDTO.getTicketNumber()
                 +" | Parking Spot : "+responseDTO.getParkingSpot().getParkingSpotNumber());
 
 
         requestDTO = new GenerateTicketRequestDTO(12L,"MH-46-04573","Shekhar",
                 "9867543423", VehicleType.BIKE);
-        responseDTO = generateTicketController.generateTicket(requestDTO);
+        responseDTO = ticketController.generateTicket(requestDTO);
         System.out.println(responseDTO.getMessage()+" | Ticket Id : "+responseDTO.getTicketNumber()
                 +" | Parking Spot : "+responseDTO.getParkingSpot().getParkingSpotNumber());
 
 
         requestDTO = new GenerateTicketRequestDTO(12L,"MH-46-04566","Sridhar",
                 "9867543400", VehicleType.BIKE);
-        responseDTO = generateTicketController.generateTicket(requestDTO);
+        responseDTO = ticketController.generateTicket(requestDTO);
         System.out.println(responseDTO.getMessage()+" | Ticket Id : "+responseDTO.getTicketNumber());
 
 
