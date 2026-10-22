@@ -6,5 +6,5 @@ import java.time.LocalDateTime;
 
 public interface PricingStrategy
 {
-    public Double calculatePrice(LocalDateTime entry_time , LocalDateTime xit_time , VehicleType vehicleType);
+     Double calculatePrice(LocalDateTime entry_time , LocalDateTime exit_time , VehicleType vehicleType);
 }

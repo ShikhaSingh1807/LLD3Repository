@@ -13,6 +13,15 @@ public class Payment extends BaseModal
     private String txn_id;
     private LocalDateTime paymentTime;
     private Bill bill;
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public Bill getBill() {
         return bill;

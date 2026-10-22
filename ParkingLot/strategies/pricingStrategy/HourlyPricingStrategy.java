@@ -25,15 +25,17 @@ public class HourlyPricingStrategy implements PricingStrategy
     @Override
     public Double calculatePrice(LocalDateTime entry_time, LocalDateTime exit_time, VehicleType vehicleType)
     {
-        if (entry_time == null || exit_time == null || vehicleType == null) {
+        //System.out.println("Inside Hourly Pricing calculation");
+        if (entry_time == null || exit_time == null || vehicleType == null)
+        {
+            //System.out.println("Inside if block");
             return 0.0; // Edge-case handling
         }
 
         Duration duration = Duration.between(entry_time,exit_time);
 
-        // Extract the difference in different units
-        double hours = duration.toMinutes()/60.0;
+        double hoursSpent = duration.toMinutes()/60.0;
 
-        return feesPerVehicleType.getOrDefault(vehicleType,0.0)*hours;
+        return hoursSpent*feesPerVehicleType.getOrDefault(vehicleType,0.0);
     }
 }

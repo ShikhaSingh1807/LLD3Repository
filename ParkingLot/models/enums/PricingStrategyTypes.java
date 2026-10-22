@@ -2,5 +2,5 @@ package models.enums;
 
 public enum PricingStrategyTypes
 {
-    HOURLY,FIXED
+    HOURLY,PEAK_TIME
 }

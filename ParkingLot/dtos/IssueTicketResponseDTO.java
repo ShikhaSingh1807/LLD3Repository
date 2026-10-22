@@ -4,7 +4,7 @@ import models.ParkingSpot;
 
 import java.time.LocalDateTime;
 
-public class GenerateTicketResponseDTO
+public class IssueTicketResponseDTO
 {
     private Long ticketId;
     private String ticketNumber;

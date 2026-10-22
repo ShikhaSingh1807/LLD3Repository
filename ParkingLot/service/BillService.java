@@ -32,63 +32,49 @@ public class BillService
     {
         Bill bill = new Bill();
 
-        //Using the Operator id get the operator object
-        //Check for null
-        Optional<Operator> optOperator = operatorInMemoryRepository.getById(operatorId);
-        if(optOperator.isEmpty())
-            throw new RuntimeException("No operator found with id : "+operatorId);
+        //Get Ticket from ticket Id
+        Ticket ticket = ticketInMemoryRepository.getById(ticketId).orElseThrow(()->
+                new RuntimeException("No Ticket found with id : "+ticketId));
+        //Get Operator from operator id
+        Operator operator = operatorInMemoryRepository.getById(operatorId).orElseThrow(()->
+                new RuntimeException("No operator available with operatorId : "+operatorId));
 
-        Operator operator = optOperator.get();
-
-        //From operator get the gate object
-        //If gate object is null then throw exception
-        //Also check type of gate , it should be exit gate then only generate bill else throw exception
-        //We can check for gate status to be open to generate bill
+        //Get gate from Operator object
         Gate gate = operator.getGate();
-        if(gate==null)
-            throw  new RuntimeException("Gate not found...");
-        if(gate.getGateType()== GateType.ENTRY)
-            throw  new IllegalArgumentException("Invalid Gate type . Bill can be generated at exit gate only...");
+
+        //Check if gate is exit gate or not else throw error
+        if(gate.getGateType() == GateType.ENTRY)
+            throw new RuntimeException("Invalid gate and Bill can be generated only at Exit gate");
+
+        //Check if gate was Open or not operational
         if(gate.getGateStatus()== GateStatus.CLOSED || gate.getGateStatus()==GateStatus.UN_OPERATIONAL)
             throw new IllegalArgumentException("Invalid Gate as Bill can be generated at Open Gare only");
 
-        //Get the ticket details from the ticketId
-        //Check for null also
 
-        Optional<Ticket> optTicket = ticketInMemoryRepository.getById(ticketId);
-        if(optTicket.isEmpty())
-        {
-            throw  new RuntimeException("Ticket does not exists with id : "+ticketId);
-        }
-
-        Ticket ticket = optTicket.get();
-
-
-        //From gate get the parking lot object
-        //If parking lot object is null then throw exception
-        //Get the pricing strategy for the parking lot and accordingly calculate the amount.
+        //Get Parking Lot from Gate
         ParkingLot parkingLot = gate.getParkingLot();
-        if(parkingLot == null)
+
+        if(parkingLot==null)
         {
-            throw  new RuntimeException("Parking Lot not available...");
+            throw new RuntimeException("No Parking Lot found for parking with this gate details...");
         }
 
-        double amount = PricingStrategyFactory
-                .getPricingStrategy(parkingLot.getPricingStrategyType())
-                .calculatePrice(ticket.getEntry_time(), LocalDateTime.now(),ticket.getVehicle().getVehicleType());
+        //System.out.println("Will start Amount calculation");
+        //For testing easy lets pass the exit time as 2 hours after the minutes
+//        Double amountBilled = PricingStrategyFactory.getPricingStrategy(parkingLot.getPricingStrategyType())
+//                .calculatePrice(ticket.getEntry_time(),LocalDateTime.now(),ticket.getVehicle().getVehicleType());
+        Double amountBilled = PricingStrategyFactory.getPricingStrategy(parkingLot.getPricingStrategyType())
+                .calculatePrice(ticket.getEntry_time(),LocalDateTime.now().plusHours(2),ticket.getVehicle().getVehicleType());
+        //System.out.println("Amount : "+amountBilled);
 
-
-        //Bill Status can be kept as UNPAID
+        bill.setPaymentList(new ArrayList<>());
         bill.setBillStatus(BillStatus.UNPAID);
-        bill.setAmount(amount);
+        bill.setTicket(ticket);
         bill.setGate(gate);
         bill.setOperator(operator);
         bill.setExit_time(LocalDateTime.now());
-        bill.setTicket(ticket);
-        bill.setPaymentList(new ArrayList<>());
+        bill.setAmount(amountBilled);
 
-        //Bill can be created with empty payments list
-
-        return  billInMemoryRepository.save(bill);
+        return billInMemoryRepository.save(bill);
     }
 }

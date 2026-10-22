@@ -1,8 +1,8 @@
 package factories;
 
 import models.enums.PricingStrategyTypes;
-import strategies.pricingStrategy.FixedPricePricingStrategy;
 import strategies.pricingStrategy.HourlyPricingStrategy;
+import strategies.pricingStrategy.PeakTimePricingStrategy;
 import strategies.pricingStrategy.PricingStrategy;
 
 public class PricingStrategyFactory
@@ -12,7 +12,7 @@ public class PricingStrategyFactory
         return switch (pricingStrategyTypes)
         {
             case HOURLY -> new HourlyPricingStrategy();
-            case FIXED -> new FixedPricePricingStrategy();
+            case PEAK_TIME -> new PeakTimePricingStrategy();
         };
     }
 }

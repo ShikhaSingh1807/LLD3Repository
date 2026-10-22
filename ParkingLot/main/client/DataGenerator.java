@@ -43,30 +43,24 @@ public class DataGenerator
 
 
         //4 Parking Slots :- 2 each for BIKE and CAR
-        ParkingSpot parkingSpot1A =  new ParkingSpot(1, VehicleType.BIKE);
-        ParkingSpot parkingSpot1B = new ParkingSpot(2,VehicleType.BIKE);
-        ParkingSpot parkingSpot1C = new ParkingSpot(3,VehicleType.CAR);
-        ParkingSpot parkingSpot1D = new ParkingSpot(4,VehicleType.CAR);
-        ParkingSpot parkingSpot1E = new ParkingSpot(5,VehicleType.CAR);
+        ParkingSpot parkingSpot1A =  new ParkingSpot(1, VehicleType.BIKE,parkingFloor1);
+        ParkingSpot parkingSpot1B = new ParkingSpot(2,VehicleType.BIKE,parkingFloor1);
+        ParkingSpot parkingSpot1C = new ParkingSpot(3,VehicleType.CAR,parkingFloor1);
+        ParkingSpot parkingSpot1D = new ParkingSpot(4,VehicleType.CAR,parkingFloor1);
 
-        ParkingSpot parkingSpot2A =  new ParkingSpot(6, VehicleType.BIKE);
-        ParkingSpot parkingSpot2B = new ParkingSpot(7,VehicleType.BIKE);
-        ParkingSpot parkingSpot2C = new ParkingSpot(8,VehicleType.TRUCK);
-        ParkingSpot parkingSpot2D = new ParkingSpot(9,VehicleType.BIKE);
-        ParkingSpot parkingSpot2E = new ParkingSpot(10,VehicleType.CAR);
-        ParkingSpot parkingSpot2F = new ParkingSpot(11,VehicleType.CAR);
+        ParkingSpot parkingSpot2A =  new ParkingSpot(5, VehicleType.BIKE,parkingFloor2);
+        ParkingSpot parkingSpot2B = new ParkingSpot(6,VehicleType.CAR,parkingFloor2);
+        ParkingSpot parkingSpot2C = new ParkingSpot(7,VehicleType.TRUCK,parkingFloor2);
+
 
         parkingSpotInMemoryRepository.save(parkingSpot1A);
         parkingSpotInMemoryRepository.save(parkingSpot1B);
         parkingSpotInMemoryRepository.save(parkingSpot1C);
         parkingSpotInMemoryRepository.save(parkingSpot1D);
-        parkingSpotInMemoryRepository.save(parkingSpot1E);
         parkingSpotInMemoryRepository.save(parkingSpot2A);
         parkingSpotInMemoryRepository.save(parkingSpot2B);
         parkingSpotInMemoryRepository.save(parkingSpot2C);
-        parkingSpotInMemoryRepository.save(parkingSpot2D);
-        parkingSpotInMemoryRepository.save(parkingSpot2E);
-        parkingSpotInMemoryRepository.save(parkingSpot2F);
+
 
         //2 Gates
         Gate entryGate = new Gate(GateStatus.OPEN,1, GateType.ENTRY);
@@ -88,16 +82,16 @@ public class DataGenerator
 
         // Some Allowed vehicles
 
-        AllowedVehicle allowedVehicleParkingLotCar = new AllowedVehicle(VehicleType.CAR,5);
-        AllowedVehicle allowedVehicleParkingLotBike = new AllowedVehicle(VehicleType.BIKE,5);
+        AllowedVehicle allowedVehicleParkingLotCar = new AllowedVehicle(VehicleType.CAR,3);
+        AllowedVehicle allowedVehicleParkingLotBike = new AllowedVehicle(VehicleType.BIKE,3);
         AllowedVehicle allowedVehicleParkingLotTruck = new AllowedVehicle(VehicleType.TRUCK,1);
 
-        AllowedVehicle allowedVehicleParkingFloor1Car = new AllowedVehicle(VehicleType.CAR,3);
+        AllowedVehicle allowedVehicleParkingFloor1Car = new AllowedVehicle(VehicleType.CAR,2);
         AllowedVehicle allowedVehicleParkingFloor1Bike = new AllowedVehicle(VehicleType.BIKE,2);
         AllowedVehicle allowedVehicleParkingFloor1Truck = new AllowedVehicle(VehicleType.TRUCK,0);
 
-        AllowedVehicle allowedVehicleParkingFloor2Car = new AllowedVehicle(VehicleType.CAR,2);
-        AllowedVehicle allowedVehicleParkingFloor2Bike = new AllowedVehicle(VehicleType.BIKE,3);
+        AllowedVehicle allowedVehicleParkingFloor2Car = new AllowedVehicle(VehicleType.CAR,1);
+        AllowedVehicle allowedVehicleParkingFloor2Bike = new AllowedVehicle(VehicleType.BIKE,1);
         AllowedVehicle allowedVehicleParkingFloor2Truck = new AllowedVehicle(VehicleType.TRUCK,1);
 
         List<AllowedVehicle> allAllowedVehicles = List.of(allowedVehicleParkingLotCar,allowedVehicleParkingLotBike
@@ -119,13 +113,12 @@ public class DataGenerator
 
         parkingFloor1.setAllowedVehicles(List.of(allowedVehicleParkingFloor1Bike,allowedVehicleParkingFloor1Car,
                 allowedVehicleParkingFloor1Truck));
-        parkingFloor1.setParkingSpots(List.of(parkingSpot1A,parkingSpot1B,parkingSpot1C,parkingSpot1D,parkingSpot1E));
+        parkingFloor1.setParkingSpots(List.of(parkingSpot1A,parkingSpot1B,parkingSpot1C,parkingSpot1D));
 
         parkingFloorInMemoryRepository.save(parkingFloor1);
         parkingFloor2.setAllowedVehicles(List.of(allowedVehicleParkingFloor2Bike,allowedVehicleParkingFloor2Car,
                 allowedVehicleParkingFloor2Truck));
-        parkingFloor2.setParkingSpots(List.of(parkingSpot2A,parkingSpot2B,parkingSpot2C,parkingSpot2D,parkingSpot2E,
-                parkingSpot2F));
+        parkingFloor2.setParkingSpots(List.of(parkingSpot2A,parkingSpot2B,parkingSpot2C));
         parkingFloorInMemoryRepository.save(parkingFloor2);
 
 

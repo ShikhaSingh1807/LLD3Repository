@@ -1,7 +1,7 @@
 package controller;
 
-import dtos.GenerateTicketRequestDTO;
-import dtos.GenerateTicketResponseDTO;
+import dtos.IssueTicketRequestDTO;
+import dtos.IssueTicketResponseDTO;
 import dtos.ResponseStatus;
 import models.Ticket;
 import service.TicketService;
@@ -15,9 +15,9 @@ public class TicketController
         this.ticketService = ticketService;
     }
 
-    public GenerateTicketResponseDTO generateTicket(GenerateTicketRequestDTO requestDTO)
+    public IssueTicketResponseDTO issueTicket(IssueTicketRequestDTO requestDTO)
     {
-        GenerateTicketResponseDTO generateTicketResponseDTO = new GenerateTicketResponseDTO();
+        IssueTicketResponseDTO issueTicketResponseDTO = new IssueTicketResponseDTO();
 
         try
         {
@@ -26,21 +26,21 @@ public class TicketController
                     requestDTO.getRegistrationNumber(),requestDTO.getOwnerName(),
                     requestDTO.getOwnerContactNumber(),requestDTO.getVehicleType());
 
-            generateTicketResponseDTO.setTicketNumber(ticket.getTicketNumber());
-            generateTicketResponseDTO.setTicketId(ticket.getId());
-            generateTicketResponseDTO.setEntry_time(ticket.getEntry_time());
-            generateTicketResponseDTO.setParkingSpot(ticket.getParkingSpot());
-            generateTicketResponseDTO.setMessage("Ticket Generated Successfully...");
-            generateTicketResponseDTO.setResrponseStatus(ResponseStatus.SUCCESS);
+            issueTicketResponseDTO.setTicketNumber(ticket.getTicketNumber());
+            issueTicketResponseDTO.setTicketId(ticket.getId());
+            issueTicketResponseDTO.setEntry_time(ticket.getEntry_time());
+            issueTicketResponseDTO.setParkingSpot(ticket.getParkingSpot());
+            issueTicketResponseDTO.setMessage("Ticket Issued Successfully...");
+            issueTicketResponseDTO.setResrponseStatus(ResponseStatus.SUCCESS);
         }
         catch(Exception e)
         {
             System.out.println("Error in generating ticket : "+e.getMessage());
             //e.printStackTrace();
-            generateTicketResponseDTO.setResrponseStatus(ResponseStatus.FAILURE);
-            generateTicketResponseDTO.setMessage(e.getMessage());
+            issueTicketResponseDTO.setResrponseStatus(ResponseStatus.FAILURE);
+            issueTicketResponseDTO.setMessage(e.getMessage());
         }
-        return generateTicketResponseDTO;
+        return issueTicketResponseDTO;
     }
 
     //Long operatorId, String registrationNumber, String ownerName,String ownerContactNumber,AllowedVehicleType vehicleType

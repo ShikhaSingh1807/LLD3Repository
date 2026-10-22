@@ -2,7 +2,7 @@ package dtos;
 
 import models.enums.VehicleType;
 
-public class GenerateTicketRequestDTO
+public class IssueTicketRequestDTO
 {
     private Long operatorId;
     private String registrationNumber;
@@ -10,8 +10,8 @@ public class GenerateTicketRequestDTO
     private String ownerContactNumber;
     private VehicleType vehicleType;
 
-    public GenerateTicketRequestDTO(Long operatorId, String registrationNumber, String ownerName,
-                                    String ownerContactNumber, VehicleType vehicleType) {
+    public IssueTicketRequestDTO(Long operatorId, String registrationNumber, String ownerName,
+                                 String ownerContactNumber, VehicleType vehicleType) {
         this.operatorId = operatorId;
         this.registrationNumber = registrationNumber;
         this.ownerName = ownerName;
